@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -17,16 +18,18 @@ public class MyAdapter extends BaseAdapter {
     private Context context;
     Random random = new Random();
 
-    private String[] texts = { Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
+    private ArrayList<Character> texts;/*{ Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
             Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),
-            Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),};
+            Character.toString((char) (random.nextInt(26)+'a')), Character.toString((char) (random.nextInt(26)+'a')),};*/
 
-    public MyAdapter(Context context) {
+    public MyAdapter(Context context, ArrayList<Character> letters )
+    {
+        texts = letters;
         this.context = context;
     }
 
@@ -54,7 +57,8 @@ public class MyAdapter extends BaseAdapter {
 
         tv.setTextSize(25.0f);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        tv.setText(texts[position]);
+
+        tv.setText(texts.get(position)+"");
 
         return tv;
     }
