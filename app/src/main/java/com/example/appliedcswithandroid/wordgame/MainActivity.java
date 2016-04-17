@@ -2,6 +2,7 @@ package com.example.appliedcswithandroid.wordgame;
 
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,13 +31,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Character> list = null;
     GridView gridView;
     Button wordFormed, reset;
-    TextView score;
-
+    TextView score, timer;
     MyAdapter adapter = null;
-
     String wordEntered = "";
-
     private static int WORD_COUNT = 0;
+    CountDownTimer countDownTimer;
 
     String s;
     char[] startingLetters = new char[16];
@@ -101,16 +100,21 @@ public class MainActivity extends AppCompatActivity {
 */
         reset_grid();
 
+        start_timer();
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                char letter = list.get(position);
 
-                wordEntered += letter;
+                if(gridView.getAdapter().getView(position, view, parent).isEnabled() ) {    //to disable the buttons once used
+                    char letter = list.get(position);
 
-                wordFormed.setText(wordEntered);
+                    wordEntered += letter;
 
-    //            gridView.getAdapter().getItem(position);
+                    wordFormed.setText(wordEntered);
+
+                    gridView.getAdapter().getView(position, view, parent).setEnabled(false);
+                }
             }
         });
 
@@ -230,6 +234,12 @@ public class MainActivity extends AppCompatActivity {
                 list.remove((Object) word.charAt(i));
             }
 
+
+            /********************************************************************
+             * Here we have to put the code to enable the buttons
+             */
+
+
             String newWord = this.getWord(word.length(),root).toUpperCase();
 
             for(int i=0;i<newWord.length();i++)
@@ -263,12 +273,41 @@ public class MainActivity extends AppCompatActivity {
 
         Collections.shuffle(list);
 
+        /********************************************************************
+         * Here we have to put the code to enable the buttons
+         */
+
         if(adapter == null) {
             adapter = new MyAdapter(this, list);
             gridView.setAdapter(adapter);
         }
         else
             adapter.notifyDataSetChanged();
+
+        gridView.setEnabled(true);
+        wordFormed.setEnabled(true);
+
+        start_timer();
+    }
+
+    public void start_timer() {
+        timer = (TextView) findViewById(R.id.timer);
+
+        if(countDownTimer == null) {
+            countDownTimer = new CountDownTimer(30000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    timer.setText("Time left: " + millisUntilFinished / 1000 + " ");
+                }
+
+                public void onFinish() {
+                    gridView.setEnabled(false);
+                    wordFormed.setEnabled(false);
+                    timer.setText("Game Over ");
+                }
+            };
+        }
+
+        countDownTimer.start();
     }
 }
 

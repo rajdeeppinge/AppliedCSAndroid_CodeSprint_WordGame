@@ -27,15 +27,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/app_bar"
         android:textSize="30dp"
-        android:id="@+id/time"
-        android:text="time left " />
+        android:id="@+id/timer"/>
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:id="@+id/score"
         android:layout_below="@+id/app_bar"
-        android:layout_toRightOf="@+id/time"
+        android:layout_toRightOf="@+id/timer"
         android:textSize="30dp"
         android:gravity="right" />
     
